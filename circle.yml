@@ -8,4 +8,4 @@ dependencies:
 
 test:
   override:
-    - docker run migurski/gdalambda python -c "from osgeo import ogr; geom = ogr.CreateGeometryFromWkt('point(0 0)'); assert str(geom) == 'POINT (0 0)'"
+    - docker run -v `pwd`:/vol migurski/gdalambda /vol/test.py

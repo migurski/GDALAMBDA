@@ -56,5 +56,8 @@ RUN \
 
 ENV PATH /tmp/virtualenv/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+COPY . /var/gdalambda
+WORKDIR /var/gdalambda
+
 RUN \
-  pip install -U GDAL==2.1.3
+  pip install -r requirements.txt
