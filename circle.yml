@@ -1,0 +1,20 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - docker pull migurski/gdalambda:latest || true
+  override:
+    - docker build --quiet -f Dockerfile -t migurski/gdalambda:latest .
+
+test:
+  override:
+    - docker run migurski/gdalambda:latest python -c 'from osgeo import gdal'
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push migurski/gdalambda:latest
