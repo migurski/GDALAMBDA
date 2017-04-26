@@ -49,6 +49,21 @@ RUN \
   make -j $(nproc) && \
   make install
 
+# Add GDAL libs to the function zip
+
+WORKDIR /var/task
+
+RUN \
+  strip lib/libgdal.so.20.1.0 && \
+  strip lib/libproj.so.12.0.0
+
+RUN \
+  zip --symlinks \
+    -r /tmp/task.zip \
+    lib/libgdal.so* \
+    lib/libproj.so* \
+    share/gdal/
+
 # Install Python deps in a virtualenv
 
 RUN \
@@ -61,3 +76,19 @@ WORKDIR /var/gdalambda
 
 RUN \
   pip install -r requirements.txt
+
+# Add Python deps to the function zip
+
+WORKDIR /tmp/virtualenv/lib/python2.7/site-packages
+
+# skip the zipping (above, too) and put it in a staging directory that can be copied to a volume or output via tar on stdout
+# determined by copying the app in, touching start, exercising it, then using find /tmp/virtualenv/lib/python2.7/site-packages -type f -anewer start | sort
+RUN \
+  zip \
+    -r /tmp/task.zip \
+    gdalconst.pyc \
+    ogr.pyc \
+    osr.pyc \
+    osgeo/*.so \
+    osgeo/*.pyc \
+    gdal.pyc
