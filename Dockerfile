@@ -87,9 +87,14 @@ WORKDIR /tmp/virtualenv/lib/python3.6/site-packages
 RUN \
   zip \
     -r /tmp/task.zip \
-    gdalconst.pyc \
-    ogr.pyc \
-    osr.pyc \
+    gdalconst.py \
+    ogr.py \
+    osr.py \
     osgeo/*.so \
-    osgeo/*.pyc \
-    gdal.pyc
+    osgeo/*.py \
+    gdal.pyc \
+    __pycache__/gdalconst.cpython-36.pyc \
+    __pycache__/ogr.cpython-36.pyc \
+    __pycache__/osr.cpython-36.pyc \
+    osgeo/__pycache__/*.cpython-36.pyc \
+    __pycache__/gdal.cpython-36.pyc
