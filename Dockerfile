@@ -1,4 +1,4 @@
-FROM lambci/lambda:build-python2.7
+FROM lambci/lambda:build-python3.6
 
 # Install deps
 
@@ -67,6 +67,7 @@ RUN \
 # Install Python deps in a virtualenv
 
 RUN \
+  pip install virtualenv && \
   virtualenv /tmp/virtualenv
 
 ENV PATH /tmp/virtualenv/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -79,10 +80,10 @@ RUN \
 
 # Add Python deps to the function zip
 
-WORKDIR /tmp/virtualenv/lib/python2.7/site-packages
+WORKDIR /tmp/virtualenv/lib/python3.6/site-packages
 
 # skip the zipping (above, too) and put it in a staging directory that can be copied to a volume or output via tar on stdout
-# determined by copying the app in, touching start, exercising it, then using find /tmp/virtualenv/lib/python2.7/site-packages -type f -anewer start | sort
+# determined by copying the app in, touching start, exercising it, then using find /tmp/virtualenv/lib/python3.6/site-packages -type f -anewer start | sort
 RUN \
   zip \
     -r /tmp/task.zip \
